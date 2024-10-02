@@ -1,4 +1,4 @@
-﻿@model List<AuctionHouse.Models.Listing>
+﻿@model PaginatedList<AuctionHouse.Models.Listing>
 
 @{
     ViewData["Title"] = "Index";
@@ -6,13 +6,11 @@
 
 <h2>Active listings</h2>
 
-@foreach(var Listings in Model)
+@foreach (var Listings in Model)
 {
     <div class="container" style="background-color: rgba(138, 129, 133, 0.6); margin-top:50px; margin-bottom: 50px; padding: 20px; border-radius: 10px">
         <div class="row">
-            <div class="col col-xs-6 col-lg-5">
-                <img src="~/Images/@Listings.ImgPath" style="max-width: 400px; max-height: 400px" />
-            </div>
+            <img src="@Url.Content("~/Images/"+Listings.ImgPath)" alt="Image from wwwroot" style="max-width: 400px; max-height: 400px" />
             <div class="col col-xs-6 col-lg-7">
                 <h5><a asp-action="Details" asp-route-id="@Listings.Id" style="color: black;">@Listings.Title</a></h5>
                 <div>@Listings.Description</div>
@@ -27,3 +25,26 @@
 {
     <p>No Active Listings</p>
 }
+
+<!-- Paginacja -->
+<div class="pagination">
+    @if (Model.HasPreviousPage)
+    {
+        <a class="btn btn-primary" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)">Previous</a>
+    }
+    else
+    {
+        <button class="btn btn-primary" disabled>Previous</button>
+    }
+
+    <span>Page @Model.PageIndex of @Model.TotalPages</span>
+
+    @if (Model.HasNextPage)
+    {
+        <a class="btn btn-primary" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)">Next</a>
+    }
+    else
+    {
+        <button class="btn btn-primary" disabled>Next</button>
+    }
+</div>
