@@ -9,29 +9,52 @@ using AuctionHouse.Data;
 using AuctionHouse.Models;
 using AuctionHouse.Data.Services;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AuctionHouse.Controllers
 {
     public class ListingsController : Controller
     {
         private readonly IListingsService _listingsService;
+        private readonly IBidService _bidService;
         private readonly IWebHostEnvironment _webHostEnviroment;
 
-        public ListingsController(IListingsService listingsService, IWebHostEnvironment webHostEnvironment)
+        public ListingsController(IListingsService listingsService,IBidService bidService, IWebHostEnvironment webHostEnvironment)
         {
             _listingsService = listingsService;
+            _bidService = bidService;
             _webHostEnviroment = webHostEnvironment;
         }
 
         // GET: Listings with Pagination
-        public async Task<IActionResult> Index(int? pageNumber)
+        public async Task<IActionResult> Index(int? pageNumber, string searchString)
         {
-            int pageSize = 2; // Liczba elementów na stronie
+            int pageSize = 3; // elements numbers on page
             var listings = _listingsService.GetAll();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                listings = listings.Where(a => a.Title.Contains(searchString));
+            }
 
             // Tworzymy stronicowaną listę
             return View(await PaginatedList<Listing>.CreateAsync(listings, pageNumber ?? 1, pageSize));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddBid([Bind("Id, Price, ListingId, Identityuser")] Bid bid)
+        {
+            if (ModelState.IsValid)
+            {
+                await _bidService.AddAsync(bid);
+            }
+            var listing = await _listingsService.GetById(bid.ListingId);
+            listing.Price = bid.Price;
+            await _listingsService.SaveChanges();
+
+            return View("Details", listing);
+        }
+
 
         // GET: Listings/Details/5
         public async Task<IActionResult> Details(int? id)

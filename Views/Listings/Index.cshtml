@@ -10,7 +10,7 @@
 {
     <div class="container" style="background-color: rgba(138, 129, 133, 0.6); margin-top:50px; margin-bottom: 50px; padding: 20px; border-radius: 10px">
         <div class="row">
-            <img src="@Url.Content("~/Images/"+Listings.ImgPath)" alt="Image from wwwroot" style="max-width: 400px; max-height: 400px" />
+            <img src="@Url.Content("~/Images/"+Listings.ImgPath)" alt="Image from wwwroot" style="max-width: 200px; max-height: 200px" />
             <div class="col col-xs-6 col-lg-7">
                 <h5><a asp-action="Details" asp-route-id="@Listings.Id" style="color: black;">@Listings.Title</a></h5>
                 <div>@Listings.Description</div>
