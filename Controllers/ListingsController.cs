@@ -121,7 +121,6 @@ namespace AuctionHouse.Controllers
         {
             return View();
         }
-
         // POST: Listings/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -129,24 +128,35 @@ namespace AuctionHouse.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (listing.Image != null)
+                if (listing.Image != null && listing.Image.Length > 0)
                 {
-                    //string uploadDir = Path.Combine(_webHostEnviroment.WebRootPath, "Images");
-                    string fileName = listing.Image.FileName;
-                    //string filePath = Path.Combine(uploadDir, fileName);
+                    // Set the directory to save images
+                    string uploadDir = Path.Combine(_webHostEnviroment.WebRootPath, "images");
 
-                    using (var fileStream = new FileStream(fileName, FileMode.Create))
+                    // Ensure the directory exists
+                    if (!Directory.Exists(uploadDir))
                     {
-                        listing.Image.CopyTo(fileStream);
+                        Directory.CreateDirectory(uploadDir);
                     }
 
+                    // Create a unique file name
+                    string fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(listing.Image.FileName);
+                    string filePath = Path.Combine(uploadDir, fileName);
+
+                    // Save the uploaded file
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await listing.Image.CopyToAsync(fileStream);
+                    }
+
+                    // Create the Listing object with the image path
                     var listObj = new Listing
                     {
                         Title = listing.Title,
                         Description = listing.Description,
                         Price = listing.Price,
                         IdentityUserId = listing.IdentityUserId,
-                        ImgPath = fileName,
+                        ImgPath = fileName, // Store the unique file name
                     };
 
                     await _listingsService.Add(listObj);
@@ -154,7 +164,9 @@ namespace AuctionHouse.Controllers
                 }
             }
 
+            // If we got this far, something failed, redisplay form
             return View(listing);
         }
+
     }
 }

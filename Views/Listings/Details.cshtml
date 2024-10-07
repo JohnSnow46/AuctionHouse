@@ -47,12 +47,12 @@
                         Bid: $ <input type="number" min="@Model.Price" step="1" name="Price" placeholder="@Model.Price.ToString("N2")" />
                         <input type="hidden" name="IdentityUserId" class="form-cotrol" value="@UserManager.GetUserId(User)" />
                         <input type="hidden" name="ListingId" class="form-cotrol" value="@Model.Id" />
-                        <input type="submit" class="btn btn-primary" />
+                        <input type="submit" class="btn btn-success" />
                     </div>
                 </form>
                 <p>Bids submitted: @Model.Bids.Count</p>
                 <br />
-                @if (UserManager.GetUserId(User) == Model.User.Id)
+                @if (UserManager.GetUserId(User) == Model.User.Id) /// TODO bids is not sorted 
                 {
                     @foreach (var bid in Model.Bids)
                     {
@@ -66,7 +66,7 @@
             {
                 <div>
                     Bid: $ <input type="number" min="@Model.Price" step="1" name="Price" placeholder="@Model.Price.ToString("N2")" />
-                    <input disabled type="submit" class="btn btn-primary" />
+                    <input disabled type="submit" class="btn btn-success" />
                 </div>
                 <p>Bids submitted: @Model.Bids.Count</p>
             }
@@ -94,7 +94,7 @@
             <textarea class="form-control" aria-label="with textarea" name="content" style="width: 40%; vertical-align:top;"></textarea>
             <input type="hidden" name="IdentityUserId" class="form-cotrol" value="@UserManager.GetUserId(User)" />
             <input type="hidden" name="ListingId" class="form-cotrol" value="@Model.Id" />
-            <input type="submit" class="btn btn-primary" style="display: inline-block; margin-top:10px" />
+            <input type="submit" class="btn btn-success" style="display: inline-block; margin-top:10px" />
         </form>
     </div>
 }
@@ -103,7 +103,7 @@ else
     <div class="container">
         <h6>add comment</h6>
         <textarea class="form-control" aria-label="with textarea" name="content" style="width: 40%; vertical-align:top;"></textarea>
-        <input type="submit" disabled class="btn btn-primary" style="display: inline-block; margin-top:10px" />
+        <input type="submit" disabled class="btn btn-success" style="display: inline-block; margin-top:10px" />
     </div>
 }
 <br />

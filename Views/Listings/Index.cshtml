@@ -26,25 +26,24 @@
     <p>No Active Listings</p>
 }
 
-<!-- Paginacja -->
 <div class="pagination">
     @if (Model.HasPreviousPage)
     {
-        <a class="btn btn-primary" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)">Previous</a>
+        <a class="btn btn-success" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)">Previous</a>
     }
     else
     {
-        <button class="btn btn-primary" disabled>Previous</button>
+        <button class="btn btn-success" disabled>Previous</button>
     }
 
     <span>Page @Model.PageIndex of @Model.TotalPages</span>
 
     @if (Model.HasNextPage)
     {
-        <a class="btn btn-primary" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)">Next</a>
+        <a class="btn btn-success" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)">Next</a>
     }
     else
     {
-        <button class="btn btn-primary" disabled>Next</button>
+        <button class="btn btn-success" disabled>Next</button>
     }
 </div>
