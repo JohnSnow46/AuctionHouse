@@ -10,6 +10,8 @@ using AuctionHouse.Models;
 using AuctionHouse.Data.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Cryptography;
+using System.Security.Claims;
 
 namespace AuctionHouse.Controllers
 {
@@ -17,13 +19,15 @@ namespace AuctionHouse.Controllers
     {
         private readonly IListingsService _listingsService;
         private readonly IBidService _bidService;
+        private readonly ICommentService _commentService;
         private readonly IWebHostEnvironment _webHostEnviroment;
 
-        public ListingsController(IListingsService listingsService,IBidService bidService, IWebHostEnvironment webHostEnvironment)
+        public ListingsController(IListingsService listingsService, IBidService bidService, IWebHostEnvironment webHostEnvironment, ICommentService commentService)
         {
             _listingsService = listingsService;
             _bidService = bidService;
             _webHostEnviroment = webHostEnvironment;
+            _commentService = commentService;
         }
 
         // GET: Listings with Pagination
@@ -38,15 +42,33 @@ namespace AuctionHouse.Controllers
             }
 
             // Tworzymy stronicowaną listę
-            return View(await PaginatedList<Listing>.CreateAsync(listings, pageNumber ?? 1, pageSize));
+            return View(await PaginatedList<Listing>.CreateAsync(listings.Where(l => l.IsSold == false), pageNumber ?? 1, pageSize));
+        }
+
+        public async Task<IActionResult> MyListings(int? pageNumber)
+        {
+            int pageSize = 3; // elements numbers on page
+            var listings = _listingsService.GetAll();
+
+            // Tworzymy stronicowaną listę
+            return View("Index", await PaginatedList<Listing>.CreateAsync(listings.Where(l => l.IdentityUserId == User.FindFirstValue(ClaimTypes.NameIdentifier)), pageNumber ?? 1, pageSize));
+        }
+
+        public async Task<IActionResult> MyBids(int? pageNumber)
+        {
+            int pageSize = 3; // elements numbers on page
+            var listings = _bidService.GetAll();
+
+            // Tworzymy stronicowaną listę
+            return View(await PaginatedList<Bid>.CreateAsync(listings.Where(l => l.IdentityUserId == User.FindFirstValue(ClaimTypes.NameIdentifier)), pageNumber ?? 1, pageSize));
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddBid([Bind("Id, Price, ListingId, Identityuser")] Bid bid)
+        public async Task<IActionResult> AddBid([Bind("Id, Price, ListingId, IdentityUserId")] Bid bid)
         {
             if (ModelState.IsValid)
             {
-                await _bidService.AddAsync(bid);
+                await _bidService.Add(bid);
             }
             var listing = await _listingsService.GetById(bid.ListingId);
             listing.Price = bid.Price;
@@ -55,6 +77,13 @@ namespace AuctionHouse.Controllers
             return View("Details", listing);
         }
 
+        public async Task<IActionResult> CloseBid(int id)
+        {
+            var listing = await _listingsService.GetById(id);
+            listing.IsSold = true;
+            await _listingsService.SaveChanges();
+            return View("Details", listing);
+        }
 
         // GET: Listings/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -72,6 +101,19 @@ namespace AuctionHouse.Controllers
             }
 
             return View(listing);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddComment([Bind("Id, Content, ListingId, IdentityUserId")] Comment comment)
+        {
+            if (ModelState.IsValid)
+            {
+                await _commentService.AddComment(comment);
+            }
+            var listing = await _listingsService.GetById(comment.ListingId);
+
+
+            return View("Details", listing);
         }
 
         // GET: Listings/Create

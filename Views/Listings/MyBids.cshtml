@@ -1,0 +1,50 @@
+﻿@model PaginatedList<AuctionHouse.Models.Bid>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>My Bids</h2>
+
+@foreach (var Bid in Model)
+{
+    <div class="container" style="background-color: rgba(138, 129, 133, 0.6); margin-top:50px; margin-bottom: 50px; padding: 20px; border-radius: 10px">
+        <div class="row">
+            <img src="@Url.Content("~/Images/"+Bid.Listing.ImgPath)" alt="Image from wwwroot" style="max-width: 200px; max-height: 200px" />
+            <div class="col col-xs-6 col-lg-7">
+                <h5><a asp-action="Details" asp-route-id="@Bid.Listing.Id" style="color: black;">@Bid.Listing.Title</a></h5>
+                <div>@Bid.Listing.Description</div>
+                <div>Bid: $@Bid.Listing.Price.ToString("N2")</div>
+                <div>Listed by: @Bid.Listing.User.Email</div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (!Model.Any())
+{
+    <p>No Active Listings</p>
+}
+
+<!-- Paginacja -->
+<div class="pagination">
+    @if (Model.HasPreviousPage)
+    {
+        <a class="btn btn-primary" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)">Previous</a>
+    }
+    else
+    {
+        <button class="btn btn-primary" disabled>Previous</button>
+    }
+
+    <span>Page @Model.PageIndex of @Model.TotalPages</span>
+
+    @if (Model.HasNextPage)
+    {
+        <a class="btn btn-primary" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)">Next</a>
+    }
+    else
+    {
+        <button class="btn btn-primary" disabled>Next</button>
+    }
+</div>

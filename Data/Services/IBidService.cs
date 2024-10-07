@@ -4,6 +4,7 @@ namespace AuctionHouse.Data.Services
 {
     public interface IBidService
     {
-        Task AddAsync(Bid bid);
+        Task Add(Bid bid);
+        IQueryable<Bid> GetAll();
     }
 }
