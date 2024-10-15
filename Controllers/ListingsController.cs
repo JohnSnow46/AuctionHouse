@@ -22,6 +22,8 @@ namespace AuctionHouse.Controllers
         private readonly ICommentService _commentService;
         private readonly IWebHostEnvironment _webHostEnviroment;
 
+        private static readonly int PageSize = 5;
+
         public ListingsController(IListingsService listingsService, IBidService bidService, IWebHostEnvironment webHostEnvironment, ICommentService commentService)
         {
             _listingsService = listingsService;
@@ -30,10 +32,8 @@ namespace AuctionHouse.Controllers
             _commentService = commentService;
         }
 
-        // GET: Listings with Pagination
         public async Task<IActionResult> Index(int? pageNumber, string searchString)
         {
-            int pageSize = 3; // elements numbers on page
             var listings = _listingsService.GetAll();
 
             if (!string.IsNullOrEmpty(searchString))
@@ -41,26 +41,21 @@ namespace AuctionHouse.Controllers
                 listings = listings.Where(a => a.Title.Contains(searchString));
             }
 
-            // Tworzymy stronicowaną listę
-            return View(await PaginatedList<Listing>.CreateAsync(listings.Where(l => l.IsSold == false), pageNumber ?? 1, pageSize));
+            return View(await PaginatedList<Listing>.CreateAsync(listings.Where(l => l.IsSold == false), pageNumber ?? 1, PageSize));
         }
 
         public async Task<IActionResult> MyListings(int? pageNumber)
         {
-            int pageSize = 3; // elements numbers on page
             var listings = _listingsService.GetAll();
 
-            // Tworzymy stronicowaną listę
-            return View("Index", await PaginatedList<Listing>.CreateAsync(listings.Where(l => l.IdentityUserId == User.FindFirstValue(ClaimTypes.NameIdentifier)), pageNumber ?? 1, pageSize));
+            return View("Index", await PaginatedList<Listing>.CreateAsync(listings.Where(l => l.IdentityUserId == User.FindFirstValue(ClaimTypes.NameIdentifier)), pageNumber ?? 1, PageSize));
         }
 
         public async Task<IActionResult> MyBids(int? pageNumber)
         {
-            int pageSize = 3; // elements numbers on page
             var listings = _bidService.GetAll();
 
-            // Tworzymy stronicowaną listę
-            return View(await PaginatedList<Bid>.CreateAsync(listings.Where(l => l.IdentityUserId == User.FindFirstValue(ClaimTypes.NameIdentifier)), pageNumber ?? 1, pageSize));
+            return View(await PaginatedList<Bid>.CreateAsync(listings.Where(l => l.IdentityUserId == User.FindFirstValue(ClaimTypes.NameIdentifier)), pageNumber ?? 1, PageSize));
         }
 
         [HttpPost]
@@ -85,7 +80,6 @@ namespace AuctionHouse.Controllers
             return View("Details", listing);
         }
 
-        // GET: Listings/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -116,12 +110,11 @@ namespace AuctionHouse.Controllers
             return View("Details", listing);
         }
 
-        // GET: Listings/Create
         public IActionResult Create()
         {
             return View();
         }
-        // POST: Listings/Create
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ListingVM listing)
@@ -130,33 +123,28 @@ namespace AuctionHouse.Controllers
             {
                 if (listing.Image != null && listing.Image.Length > 0)
                 {
-                    // Set the directory to save images
                     string uploadDir = Path.Combine(_webHostEnviroment.WebRootPath, "images");
 
-                    // Ensure the directory exists
                     if (!Directory.Exists(uploadDir))
                     {
                         Directory.CreateDirectory(uploadDir);
                     }
 
-                    // Create a unique file name
                     string fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(listing.Image.FileName);
                     string filePath = Path.Combine(uploadDir, fileName);
 
-                    // Save the uploaded file
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
                         await listing.Image.CopyToAsync(fileStream);
                     }
 
-                    // Create the Listing object with the image path
                     var listObj = new Listing
                     {
                         Title = listing.Title,
                         Description = listing.Description,
                         Price = listing.Price,
                         IdentityUserId = listing.IdentityUserId,
-                        ImgPath = fileName, // Store the unique file name
+                        ImgPath = fileName,
                     };
 
                     await _listingsService.Add(listObj);
@@ -164,7 +152,6 @@ namespace AuctionHouse.Controllers
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return View(listing);
         }
 

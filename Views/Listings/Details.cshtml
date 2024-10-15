@@ -78,7 +78,9 @@
                 {
                     @if (Model.IsSold == false)
                     {
-                        <a asp-action="CloseBid" asp-route-id="@Model.Id">Close Bidding</a>
+                        <a asp-action="CloseBid" asp-route-id="@Model.Id" class="btn btn-danger">
+                            <i class="fas fa-times"></i> Close Bidding
+                        </a>
                     }
                 }
             }
