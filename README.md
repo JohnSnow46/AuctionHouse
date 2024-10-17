@@ -2,7 +2,7 @@
 
 ## Description
 
-Full-featured auction house application, enabling users to create listings, place bids, and leave comments. Implemented a robust bidding service with user authentication using ASP.NET Core Identity for secure access and management.
+Welcome to the AuctionHouse project repository! This application is designed to create a comprehensive, user-friendly auction system, allowing users to list and bid on items with ease. Built using modern .NET technologies, it demonstrates proficiency in web development, coding standards, and object-oriented design.
 
 ## Key Features
 
@@ -14,3 +14,10 @@ Full-featured auction house application, enabling users to create listings, plac
 - **Transaction History:** Track previous auctions, bids, and purchase history.
 
 ## Technologies Used
+
+- **.NET Framework/Core:** Built on the latest .NET ecosystem.
+- **C#:** Backend logic and application functionality.
+- **ASP.NET MVC:** For handling the web application's architecture.
+- **HTML/CSS:** Frontend structure and styling.
+- **JavaScript:** Enhances interactivity and user experience.
+- **SQL Server:** Manages auction data, user information, and transaction records.
