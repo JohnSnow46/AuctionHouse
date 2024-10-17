@@ -1,5 +1,7 @@
 # AuctionHouse Project
 
+![auctionHouse.jpg](readmeimages/aucitonHouse.jpg)
+
 ## Description
 
 Welcome to the AuctionHouse project repository! This application is designed to create a comprehensive, user-friendly auction system, allowing users to list and bid on items with ease. Built using modern .NET technologies, it demonstrates proficiency in web development, coding standards, and object-oriented design.
