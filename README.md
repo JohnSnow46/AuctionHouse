@@ -1,6 +1,6 @@
 # AuctionHouse Project
 
-![auctionHouse.jpg](readmeimages/aucitonHouse.jpg)
+![auctionHouse.jpg](readmeimages/auctionHouse.jpg)
 
 ## Description
 
