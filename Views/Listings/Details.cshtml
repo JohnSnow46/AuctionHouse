@@ -44,7 +44,7 @@
             {
                 <form asp-action="AddBid" method="post">
                     <div>
-                        Bid: $ <input type="number" min="@Model.Price" max="10000" step="1" name="Price" placeholder="@Model.Price.ToString("N2")" />
+                        Bid: $ <input type="number" min="@Model.Price" max="10000" step="1" name="Price" placeholder="@Model.Price.ToString("N2")" required />
                         <input type="hidden" name="IdentityUserId" class="form-cotrol" value="@UserManager.GetUserId(User)" />
                         <input type="hidden" name="ListingId" class="form-cotrol" value="@Model.Id" />
                         <input type="submit" class="btn btn-success" />
@@ -93,7 +93,7 @@
     <div class="container">
         <form asp-action="AddComment" method="post">
             <h6>add comment</h6>
-            <textarea class="form-control" aria-label="with textarea" name="content" style="width: 40%; vertical-align:top;"></textarea>
+            <textarea class="form-control" aria-label="with textarea" name="content" style="width: 40%; vertical-align:top;" required></textarea>
             <input type="hidden" name="IdentityUserId" class="form-cotrol" value="@UserManager.GetUserId(User)" />
             <input type="hidden" name="ListingId" class="form-cotrol" value="@Model.Id" />
             <input type="submit" class="btn btn-success" style="display: inline-block; margin-top:10px" />
