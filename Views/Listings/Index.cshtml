@@ -27,23 +27,37 @@
 }
 
 <div class="pagination">
-    @if (Model.HasPreviousPage)
+    @if (Model.TotalPages == 0)
     {
-        <a class="btn btn-success" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)">Previous</a>
+        <span>No pages available.</span>
     }
     else
     {
-        <button class="btn btn-success" disabled>Previous</button>
-    }
+        @if (Model.PageIndex == 0)
+        {
+            <a class="btn btn-success" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)">Previous</a>
+        }
+        else
+        {
+            @if (Model.HasPreviousPage)
+            {
+                <a class="btn btn-success" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)">Previous</a>
+            }
+            else
+            {
+                <button class="btn btn-success" disabled>Previous</button>
+            }
 
-    <span>Page @Model.PageIndex of @Model.TotalPages</span>
+            <span>Page @Model.PageIndex of @Model.TotalPages</span>
 
-    @if (Model.HasNextPage)
-    {
-        <a class="btn btn-success" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)">Next</a>
-    }
-    else
-    {
-        <button class="btn btn-success" disabled>Next</button>
+            @if (Model.HasNextPage)
+            {
+                <a class="btn btn-success" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)">Next</a>
+            }
+            else
+            {
+                <button class="btn btn-success" disabled>Next</button>
+            }
+        }
     }
 </div>

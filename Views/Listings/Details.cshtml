@@ -44,7 +44,7 @@
             {
                 <form asp-action="AddBid" method="post">
                     <div>
-                        Bid: $ <input type="number" min="@Model.Price" step="1" name="Price" placeholder="@Model.Price.ToString("N2")" />
+                        Bid: $ <input type="number" min="@Model.Price" max="10000" step="1" name="Price" placeholder="@Model.Price.ToString("N2")" />
                         <input type="hidden" name="IdentityUserId" class="form-cotrol" value="@UserManager.GetUserId(User)" />
                         <input type="hidden" name="ListingId" class="form-cotrol" value="@Model.Id" />
                         <input type="submit" class="btn btn-success" />

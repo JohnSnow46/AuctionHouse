@@ -103,10 +103,11 @@ namespace AuctionHouse.Controllers
             if (ModelState.IsValid)
             {
                 await _commentService.AddComment(comment);
+
+                return RedirectToAction("Details", "Listings", new { id = comment.ListingId });
             }
+
             var listing = await _listingsService.GetById(comment.ListingId);
-
-
             return View("Details", listing);
         }
 

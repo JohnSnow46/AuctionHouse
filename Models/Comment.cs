@@ -8,6 +8,7 @@ namespace AuctionHouse.Models
     {
         public int Id { get; set; }
 
+        [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters.")]
         public string Content { get; set; }
 
         [Required]
