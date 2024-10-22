@@ -23,3 +23,5 @@ Welcome to the AuctionHouse project repository! This application is designed to 
 - **HTML/CSS:** Frontend structure and styling.
 - **JavaScript:** Enhances interactivity and user experience.
 - **SQL Server:** Manages auction data, user information, and transaction records.
+
+## [Project Link](auctionhouse20241022134948.azurewebsites.net)
