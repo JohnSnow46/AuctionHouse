@@ -1,25 +1,94 @@
-# AuctionHouse Project
+# AuctionHouse - Online Auction System
 
-![auctionHouse.jpg](readmeimages/auctionHouse.jpg)
+A comprehensive online auction management application built with modern .NET technologies. This project demonstrates a professional approach to web application development, including best practices, SOLID architecture principles, and a responsive user interface.
 
-## Description
+## 🎯 Features
 
-Welcome to the AuctionHouse project repository! This application is designed to create a comprehensive, user-friendly auction system, allowing users to list and bid on items with ease. Built using modern .NET technologies, it demonstrates proficiency in web development, coding standards, and object-oriented design.
+### For Users
+- **User Registration & Authentication** - Secure account creation and login
+- **Browse Auctions** - Search and view ongoing, upcoming, and completed auctions with detailed item descriptions
+- **Bid Management** - Place bids on auction items and receive real-time notifications when outbid
+- **Item Listings** - Create auction listings with configurable starting prices, reserve prices, and auction durations
+- **Transaction History** - Track completed auctions, placed bids, and purchase history
 
-## Key Features
+### Technical Features
+- Responsive user interface across all devices
+- Real-time notification system
+- Secure transaction processing
+- Detailed bidding history and audit trail
 
-- **User Registration and Authentication:** Create an account and securely log in to start participating in auctions.
-- **Browse Auctions:** View ongoing and upcoming auctions with detailed item descriptions and bidding history.
-- **Bid Management:** Place bids on auctioned items and receive real-time notifications if you are outbid.
-- **Item Listings:** Users can list their items for auction, including setting starting prices, reserve prices, and auction durations.
-- **Responsive UI:** Enjoy seamless navigation across devices with a responsive design.
-- **Transaction History:** Track previous auctions, bids, and purchase history.
+## 🛠️ Technology Stack
 
-## Technologies Used
+| Layer | Technology |
+|-------|-----------|
+| **Backend** | .NET Core, C#, ASP.NET MVC/Core |
+| **Frontend** | HTML5, CSS3, JavaScript |
+| **Database** | SQL Server |
+| **Architecture** | MVC, Entity Framework Core |
 
-- **.NET Framework/Core:** Built on the latest .NET ecosystem.
-- **C#:** Backend logic and application functionality.
-- **ASP.NET MVC:** For handling the web application's architecture.
-- **HTML/CSS:** Frontend structure and styling.
-- **JavaScript:** Enhances interactivity and user experience.
-- **SQL Server:** Manages auction data, user information, and transaction records.
+## 📋 Requirements
+
+- **.NET 6.0+** or higher
+- **SQL Server 2019+** (or SQL Server Express)
+- **Visual Studio 2022** (recommended) or Visual Studio Code with C# extensions
+
+## 🚀 Getting Started
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/JohnSnow46/AuctionHouse.git
+cd AuctionHouse
+```
+
+### 2. Restore NuGet Packages
+```bash
+dotnet restore
+```
+
+### 3. Configure Database
+Update the connection string in `appsettings.json`:
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=YOUR_SERVER;Database=AuctionHouseDb;Trusted_Connection=true;"
+  }
+}
+```
+
+### 4. Apply Database Migrations
+```bash
+dotnet ef database update
+```
+
+### 5. Run the Application
+```bash
+dotnet run
+```
+
+The application will be available at `https://localhost:5001`
+
+## 📁 Project Structure
+
+```
+AuctionHouse/
+├── Models/              # Data models (Auction, User, Bid, etc.)
+├── Controllers/         # ASP.NET MVC controllers
+├── Views/              # HTML/Razor views
+├── Services/           # Business logic layer
+├── Data/               # Entity Framework DbContext
+├── wwwroot/            # Static assets (CSS, JS, images)
+└── appsettings.json    # Application configuration
+```
+
+## 🔐 Security
+
+- ASP.NET Identity-based authentication
+- Password encryption
+- CSRF protection
+- Server-side and client-side data validation
+- SQL Injection prevention via Entity Framework Core
+- Authorization checks on sensitive operations
+
+## 📝 License
+
+This project is licensed under the MIT License.
